@@ -6,9 +6,13 @@ People can scan a sticker QR code and instantly see emergency contacts for that 
 
 ## Screenshots
 
-![ScanZoO Logo](assets/Scanzo.png)
+![ScanZoO Logo](car_scanner/assets/Scanzo.png)
 
-![QR Sticker Sample](assets/qr_sticker_.png)
+![ScanZoO Demo](Screenshots/onboard_1.png)
+
+![ScanZoO Demo](Screenshots/onboard_2.png)
+
+![ScanZoO Demo](Screenshots/onboard_3.png)
 
 ## Project Parts
 
