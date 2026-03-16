@@ -399,20 +399,8 @@ class StickerRepository {
         throw Exception('You do not own this sticker');
       }
 
-      // Keep a public-safe snapshot on the sticker so anonymous scan pages
-      // never need to read private user profile documents.
-      final userDoc = await _firestore.collection('users').doc(userId).get();
-      final allContactsRaw = userDoc.data()?['emergencyContacts'] as List? ?? [];
-      final selectedContacts = allContactsRaw
-          .whereType<Map<String, dynamic>>()
-          .map(EmergencyContact.fromMap)
-          .where((contact) => contactIds.contains(contact.id))
-          .map((contact) => contact.toMap())
-          .toList();
-
       await _firestore.collection('stickers').doc(stickerId).update({
         'emergencyContactIds': contactIds,
-        'publicEmergencyContacts': selectedContacts,
         'updatedAt': FieldValue.serverTimestamp(),
       });
     } catch (e) {
