@@ -1,0 +1,9 @@
+# Admin panel
+/admin   /admin.html  200
+
+# Redirect all scan URLs to index.html
+/scan/*  /index.html  200
+/s/*     /index.html  200
+
+# Also support query parameter format
+/scan    /index.html  200

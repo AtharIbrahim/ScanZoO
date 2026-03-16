@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to check if user owns the resource
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Validate that the provided user really owns the target sticker.
+    function stickerOwnerMatches(stickerId, userId) {
+      let stickerDoc = get(/databases/$(database)/documents/stickers/$(stickerId));
+      return stickerDoc.exists() && stickerDoc.data.userId == userId;
+    }
+    
+    // Admin collection - Only accessible via Firebase Console
+    match /admin/{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Stickers collection
+    match /stickers/{stickerId} {
+      // Public website can fetch one sticker by ID, but cannot list all stickers.
+      allow get: if true;
+      allow list: if isAuthenticated();
+      
+      // Allow authenticated users (admins) to create new stickers
+      allow create: if isAuthenticated();
+      
+      // Allow update only for sticker activation
+      // Rules:
+      // 1. User must be authenticated
+      // 2. Current status must be 'inactive'
+      // 3. Current userId must be null, empty string, or 'null' (not assigned)
+      // 4. New status must be 'active'
+      // 5. New userId must be the current user
+      // 6. activatedAt must be set
+      allow update: if isAuthenticated()
+                    && resource.data.status == 'inactive'
+                    && (resource.data.userId == null || resource.data.userId == '' || resource.data.userId == 'null')
+                    && request.resource.data.status == 'active'
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.activatedAt != null;
+      
+      // Allow users to update their own sticker's data.
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      
+      // Allow delete only for sticker owner.
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      // User profile data is private.
+      allow get: if isOwner(userId);
+      allow list: if false;
+
+      // Users can only write their own data.
+      allow create: if isOwner(userId);
+      
+      // Prevent users from modifying certain critical fields
+      allow update: if isOwner(userId)
+                    && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['uid', 'createdAt']);
+    }
+    
+    // Scan history collection
+    match /scanHistory/{scanId} {
+      // Authenticated users can read their own history (where they own the sticker)
+      allow read: if isAuthenticated()
+                  && resource.data.userId == request.auth.uid;
+      
+      // Authenticated users can create scan history for their stickers
+      allow create: if isAuthenticated()
+                    && request.resource.data.userId == request.auth.uid;
+      
+      // Anonymous website scans are allowed with strict payload checks.
+      allow create: if !isAuthenticated()
+            && request.resource.data.keys().hasOnly(['stickerId', 'userId', 'scannedAt', 'action', 'metadata'])
+            && request.resource.data.action == 'viewed'
+            && request.resource.data.stickerId is string
+            && request.resource.data.userId is string
+            && request.resource.data.metadata is map
+            && request.resource.data.metadata.source == 'web'
+            && stickerOwnerMatches(request.resource.data.stickerId, request.resource.data.userId);
+      
+      allow update, delete: if false;
+    }
+  }
+}

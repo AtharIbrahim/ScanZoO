@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Add New Sticker | Car Scanner</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    
+    <!-- Firebase v10.7.1 - Compat Mode -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🔐 Admin Panel</h1>
+                <p>Add New Emergency Sticker</p>
+            </div>
+            <button id="logoutBtn" class="logout-btn" style="display: none;">
+                Logout
+            </button>
+        </header>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="login-section">
+            <div class="login-card">
+                <div class="login-icon">🔒</div>
+                <h2>Admin Login</h2>
+                <p class="login-subtitle">Enter your credentials to access the admin panel</p>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="admin@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        Login
+                    </button>
+                </form>
+                
+                <div id="loginError" class="error-message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Admin Content -->
+        <div id="adminContent" style="display: none;">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-info">
+                        <h3 id="totalStickers">0</h3>
+                        <p>Total Stickers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <h3 id="activeStickers">0</h3>
+                        <p>Active Stickers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-info">
+                        <h3 id="inactiveStickers">0</h3>
+                        <p>Inactive Stickers</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Sticker Form -->
+            <div class="form-card">
+                <h2>➕ Add New Sticker</h2>
+                <p class="form-subtitle">Create a new emergency sticker in the database</p>
+                
+                <form id="stickerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stickerId">Sticker ID *</label>
+                            <input type="text" id="stickerId" required placeholder="e.g., STK-001, 123456789">
+                            <small>Must be unique. This will be the document ID.</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="qrCode">QR Code *</label>
+                            <input type="text" id="qrCode" required placeholder="QR code value">
+                            <small>Same as Sticker ID by default</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date *</label>
+                            <input type="date" id="expiryDate" required>
+                            <small>When this sticker expires</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="status">Status *</label>
+                            <select id="status" required>
+                                <option value="inactive">Inactive</option>
+                                <option value="active">Active</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                            <small>Usually "inactive" for new stickers</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userId">User ID (Optional)</label>
+                        <input type="text" id="userId" placeholder="Leave empty for new stickers">
+                        <small>Only fill if assigning to existing user</small>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>🚗 Vehicle Information (Optional)</h3>
+                        <p class="section-subtitle">Can be filled later by the user</p>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicleMake">Make</label>
+                                <input type="text" id="vehicleMake" placeholder="e.g., Toyota">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vehicleModel">Model</label>
+                                <input type="text" id="vehicleModel" placeholder="e.g., Camry">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicleYear">Year</label>
+                                <input type="number" id="vehicleYear" placeholder="e.g., 2024" min="1900" max="2100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="vehicleColor">Color</label>
+                                <input type="text" id="vehicleColor" placeholder="e.g., White">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vehiclePlate">License Plate</label>
+                            <input type="text" id="vehiclePlate" placeholder="e.g., ABC-1234">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="resetBtn" class="btn btn-secondary">
+                            Reset Form
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Add Sticker
+                        </button>
+                    </div>
+                </form>
+
+                <div id="formMessage" class="message" style="display: none;"></div>
+            </div>
+
+            <!-- Recent Stickers List -->
+            <div class="list-card">
+                <h2>📋 Recent Stickers</h2>
+                <div id="stickersList" class="stickers-list">
+                    <div class="loading">Loading stickers...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/firebase-config.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

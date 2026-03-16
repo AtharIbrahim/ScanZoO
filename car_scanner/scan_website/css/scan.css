@@ -1,0 +1,471 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 15s infinite ease-in-out;
+}
+
+.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #667eea 0%, #764ba2 100%);
+    top: -200px;
+    left: -200px;
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #f093fb 0%, #f5576c 100%);
+    bottom: -150px;
+    right: -150px;
+    animation-delay: 3s;
+}
+
+.orb-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #4facfe 0%, #00f2fe 100%);
+    top: 50%;
+    right: -100px;
+    animation-delay: 6s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    position: relative;
+    z-index: 1;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.card-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    padding: 50px 30px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.icon-wrapper {
+    width: 85px;
+    height: 85px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    animation: pulse 3s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6); }
+}
+
+.emergency-icon {
+    width: 42px;
+    height: 42px;
+    color: white;
+    stroke-width: 2.5;
+}
+
+.main-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+.card-body {
+    padding: 40px 30px;
+}
+
+.loading {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.loader-ring {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top: 5px solid #667eea;
+    border-right: 5px solid #f093fb;
+    border-radius: 50%;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    margin: 0 auto 24px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.error {
+    text-align: center;
+    padding: 50px 25px;
+}
+
+.error-icon {
+    font-size: 72px;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 4px 12px rgba(255, 107, 107, 0.4));
+}
+
+.error h2 {
+    color: #ff6b6b;
+    margin-bottom: 14px;
+    font-size: 26px;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.error p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+.vehicle-info {
+    background: rgba(102, 126, 234, 0.12);
+    backdrop-filter: blur(10px);
+    padding: 26px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    border: 1px solid rgba(102, 126, 234, 0.25);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.vehicle-info h3 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.3px;
+}
+
+.vehicle-info h3::before {
+    content: "🚗";
+    margin-right: 12px;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.vehicle-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.vehicle-detail:last-child {
+    border-bottom: none;
+}
+
+.vehicle-detail .label {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.vehicle-detail .value {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 15px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.contacts-section h3 {
+    color: #ffffff;
+    margin-bottom: 24px;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    letter-spacing: -0.3px;
+}
+
+.contacts-section h3::before {
+    content: "📞";
+    margin-right: 12px;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.contact-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 18px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.contact-card:hover {
+    border-color: rgba(102, 126, 234, 0.6);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    transform: translateY(-4px) scale(1.01);
+}
+
+.contact-card.primary {
+    border-color: rgba(240, 147, 251, 0.5);
+    background: linear-gradient(135deg, rgba(240, 147, 251, 0.15) 0%, rgba(245, 87, 108, 0.15) 100%);
+    box-shadow: 0 6px 28px rgba(240, 147, 251, 0.25);
+}
+
+.contact-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+}
+
+.contact-badge::before {
+    content: "⭐ ";
+    margin-right: 6px;
+}
+
+.contact-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.contact-relationship {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.contact-phone {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.phone-number {
+    font-size: 20px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    flex: 1;
+    min-width: 160px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.call-button {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(79, 172, 254, 0.35);
+}
+
+.call-button:hover {
+    background: linear-gradient(135deg, #3b9dea 0%, #00dae8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(79, 172, 254, 0.5);
+}
+
+.call-button:active {
+    transform: translateY(0);
+}
+
+.card-footer {
+    text-align: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.3px;
+}
+
+.footer-icon {
+    font-size: 18px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.info-box {
+    background: linear-gradient(135deg, rgba(250, 176, 5, 0.15) 0%, rgba(255, 193, 7, 0.15) 100%);
+    border-left: 4px solid #ffc107;
+    padding: 20px;
+    border-radius: 14px;
+    margin-bottom: 26px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    box-shadow: 0 4px 16px rgba(255, 193, 7, 0.2);
+}
+
+.info-box p {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0;
+    font-weight: 500;
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 26px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .icon-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+
+    .emergency-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .card-header {
+        padding: 40px 24px;
+    }
+
+    .card-body {
+        padding: 30px 20px;
+    }
+
+    .contact-name {
+        font-size: 20px;
+    }
+
+    .phone-number {
+        font-size: 18px;
+    }
+
+    .call-button {
+        width: 100%;
+        justify-content: center;
+        padding: 16px 24px;
+    }
+
+    .contact-phone {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .glass-card {
+        border-radius: 24px;
+    }
+
+    .vehicle-info,
+    .contact-card {
+        border-radius: 14px;
+    }
+}
